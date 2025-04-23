@@ -8,7 +8,9 @@ crimac_scratch = os.getenv('CRIMACSCRATCH')
 # List of test data
 test_data = [d for d in Path(crimac_scratch,'test_data').iterdir() if d.is_dir()]
 
-for _test_data in test_data[0:1]:
+testvalues = {}
+
+for _test_data in test_data:
     print(_test_data)
     rawdir60 = Path(_test_data, 'ACOUSTIC/EK60/EK60_RAWDATA')
     rawdir80 = Path(_test_data, 'ACOUSTIC/EK80/EK80_RAWDATA')
@@ -25,7 +27,7 @@ for _test_data in test_data[0:1]:
     files = [item for item in datain.rglob('*.raw') if item.is_file()]
 
     for _file in files:
-    
+        
         command = [
             "docker", "run", "-it", "--rm",
             "-v", str(datain)+':/datain',
@@ -35,3 +37,12 @@ for _test_data in test_data[0:1]:
             "crimac-datacompression"]
 
         subprocess.run(command, check=True)
+
+        koronafilesize = (dataout / (_file.name.split('.raw')[0]+'-korona.raw')).stat().st_size
+        rawfilesize = _file.stat().st_size
+        survey = str(_test_data).split('/')[-1]
+        testvalues[survey] = {}
+        testvalues[survey][_file.name] = {'OriginalFileSize': rawfilesize,
+                                          'CompresseFileSize':koronafilesize,
+                                          'CompressRatio': koronafilesize/rawfilesize}
+print(testvalues)

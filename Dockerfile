@@ -23,15 +23,19 @@ COPY KoronaCli.sh /lsss-3.0.0/korona/KoronaCli.sh
 # Copy korona files
 COPY compression.cds /app/
 COPY compression.cfs /app/
+COPY TransducerRanges.xml /app/
 
 # Install python libraries & python code
-COPY requirements.txt /requirements.txt
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+#COPY requirements.txt /requirements.txt
+#RUN pip install --no-cache-dir --upgrade pip && \
+#    pip install --no-cache-dir -r requirements.txt
+
 COPY CRIMAC_compression.py /app/CRIMAC_compression.py 
 
 WORKDIR /app
 
 RUN mkdir /scratch
+COPY TransducerRanges.xml /scratch/
 
 ENTRYPOINT ["sh", "-c", "python3 -u /app/CRIMAC_compression.py > /dataout/log.txt 2>&1"]
+

@@ -5,7 +5,7 @@
    <parameter name="Categorization"/>
    <parameter name="HorizontalTransducerOffsets"/>
    <parameter name="VerticalTransducerOffsets"/>
-   <parameter name="TransducerRanges"/>
+   <parameter name="TransducerRanges" ref="CfsDirectory">TransducerRanges.xml</parameter>
    <parameter name="Plankton"/>
    <parameter name="BroadbandNotchFilters"/>
    <parameter name="PulseCompressionFilters"/>
