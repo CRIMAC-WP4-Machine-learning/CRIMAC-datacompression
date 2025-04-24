@@ -32,10 +32,9 @@ COPY TransducerRanges.xml /app/
 
 COPY CRIMAC_compression.py /app/CRIMAC_compression.py 
 
-WORKDIR /app
-
 RUN mkdir /scratch
-COPY TransducerRanges.xml /scratch/
+
+WORKDIR /app
 
 ENTRYPOINT ["sh", "-c", "python3 -u /app/CRIMAC_compression.py > /dataout/log.txt 2>&1"]
 

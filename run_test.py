@@ -2,6 +2,8 @@
 from pathlib import Path
 import os
 import subprocess
+import json
+import numpy as np
 
 crimac_scratch = os.getenv('CRIMACSCRATCH')
 
@@ -16,12 +18,13 @@ for _test_data in test_data:
     rawdir80 = Path(_test_data, 'ACOUSTIC/EK80/EK80_RAWDATA')
     if rawdir60.exists():
         datain = rawdir60
+        dataout = Path(str(_test_data).replace("test_data", "test_data_out"), 'ACOUSTIC/EK60/EK60_DECIMATED_DATA')
     elif rawdir80.exists():
         datain = rawdir80
+        dataout = Path(str(_test_data).replace("test_data", "test_data_out"), 'ACOUSTIC/EK80/EK80_DECIMATED_DATA')
     else:
         datain = None
-
-    dataout = Path(str(_test_data).replace("test_data", "test_data_out"), 'ACOUSTIC/COMPRESSED')
+        dataout = None
 
     # List the test data files and run file by file
     files = [item for item in datain.rglob('*.raw') if item.is_file()]
@@ -41,8 +44,23 @@ for _test_data in test_data:
         koronafilesize = (dataout / (_file.name.split('.raw')[0]+'-korona.raw')).stat().st_size
         rawfilesize = _file.stat().st_size
         survey = str(_test_data).split('/')[-1]
+        _testvalues = {'OriginalFileSize': rawfilesize,
+                       'CompresseFileSize':koronafilesize,
+                       'CompressRatio': koronafilesize/rawfilesize}
+        print(_testvalues)
         testvalues[survey] = {}
-        testvalues[survey][_file.name] = {'OriginalFileSize': rawfilesize,
-                                          'CompresseFileSize':koronafilesize,
-                                          'CompressRatio': koronafilesize/rawfilesize}
-print(testvalues)
+        testvalues[survey][_file.name] = _testvalues
+
+with open('results.json', 'w') as json_file:
+    json.dump(testvalues, json_file)
+
+with open('results.json', 'r') as json_file:
+    loaded_data = json.load(json_file)
+
+cr = []
+for key in loaded_data.keys():
+    for _key in loaded_data[key].keys():
+        cr.append(loaded_data[key][_key]['CompressRatio'])
+
+print(np.array(cr))
+print(np.array(cr).mean())
