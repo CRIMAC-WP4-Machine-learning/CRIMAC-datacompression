@@ -79,7 +79,7 @@
             <parameter name="HistogramInitializationCellCount">500</parameter>
             <parameter name="HistogramMaximumCellCount">2000</parameter>
             <parameter name="HistogramInitializationSampleCount">1000</parameter>
-            <parameter name="HistogramMinimumSampleCount">20000</parameter>
+            <parameter name="HistogramMinimumSampleCount">5000</parameter>
             <parameter name="HistogramSmooth">true</parameter>
             <parameter name="HistogramSmoothFactor">100</parameter>
             <parameter name="SdevMasking">false</parameter>
@@ -88,7 +88,7 @@
             <parameter name="SNRatio">10</parameter>
             <parameter name="UseFallbackNoiseQuantile">true</parameter>
             <parameter name="FallbackNoiseQuantile">5</parameter>
-            <parameter name="FallbackNoiseChannels">f&lt;30</parameter>
+            <parameter name="FallbackNoiseChannels">f&lt;50</parameter>
             <parameter name="WritePlotParameters">false</parameter>
          </parameters>
       </module>
@@ -103,7 +103,7 @@
       <module name="EchoLineCompressionModule">
          <parameters>
             <parameter name="Active">true</parameter>
-            <parameter name="Threshold">-70</parameter>
+            <parameter name="Threshold">-82</parameter>
          </parameters>
       </module>
       <module name="DataReductionModule">
