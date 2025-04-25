@@ -30,11 +30,11 @@ COPY TransducerRanges.xml /app/
 #RUN pip install --no-cache-dir --upgrade pip && \
 #    pip install --no-cache-dir -r requirements.txt
 
+# Prepare for running
 COPY CRIMAC_compression.py /app/CRIMAC_compression.py 
-
 RUN mkdir /scratch
-
 WORKDIR /app
 
-ENTRYPOINT ["sh", "-c", "python3 -u /app/CRIMAC_compression.py > /dataout/log.txt 2>&1"]
+# Run the script
+ENTRYPOINT ["python", "-u", "/app/CRIMAC_compression.py"]
 

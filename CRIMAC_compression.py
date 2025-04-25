@@ -1,21 +1,29 @@
-import shutil
+import argparse
 import os
-from pathlib import Path
+import shutil
 import subprocess
+from pathlib import Path
 
-# Get env vars and write version to log file
-file_name = os.getenv('FILE_NAME')
-commit_sha = os.getenv('COMMIT_SHA')
-version_number = os.getenv('VERSION_NUMBER')
+# Print environment variables
 print('CRIMAC-datacompression')
-print('commit_sha: '+commit_sha)
-print('version_number: '+version_number)
+commit_sha = os.getenv('COMMIT_SHA')
+if commit_sha:
+    print(f'commit_sha: {commit_sha}')
+version_number = os.getenv('VERSION_NUMBER')
+if version_number:
+    print(f'version_number: {version_number}')
 
-# Copy a single file to scratch disk  within the
-# container (to only process a single file)
-filein = Path('/datain', file_name)
-filerun = Path('/scratch', file_name)
-shutil.copy(filein, filerun)
+# Set up argument parser
+parser = argparse.ArgumentParser(description='Process a single file with Korona')
+parser.add_argument('--filename', required=True, type=str, help='Name of the file to process')
+args = parser.parse_args()
+
+# Create a copy of the input file in the scratch directory
+filename = args.filename
+shutil.copy(
+    Path('/datain', filename), 
+    Path('/scratch', filename)
+    )
 
 # Run korona on the single file
 cmdstr = ['/lsss-3.0.0/korona/KoronaCli.sh',
@@ -23,6 +31,5 @@ cmdstr = ['/lsss-3.0.0/korona/KoronaCli.sh',
           '--cfs', '/app/compression.cfs',
           '--destination', '/dataout',
           '--source', '/scratch']
-
 print(cmdstr)
 subprocess.run(cmdstr, check=True)
