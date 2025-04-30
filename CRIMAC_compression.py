@@ -20,9 +20,25 @@ args = parser.parse_args()
 
 # Create a copy of the input file in the scratch directory
 filename = args.filename
+idxname = filename.split('.')[0]+'.idx'
+botname = filename.split('.')[0]+'.bot'
+print(filename)
+print(idxname)
+print(botname)
+
 shutil.copy(
     Path('/datain', filename), 
     Path('/scratch', filename)
+    )
+
+shutil.copy(
+    Path('/datain', idxname), 
+    Path('/scratch', idxname)
+    )
+
+shutil.copy(
+    Path('/datain', botname), 
+    Path('/scratch', botname)
     )
 
 # Run korona on the single file
