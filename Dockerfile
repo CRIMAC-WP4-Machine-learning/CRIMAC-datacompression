@@ -8,17 +8,18 @@ ARG version_number
 ARG commit_sha
 ENV VERSION_NUMBER=$version_number
 ENV COMMIT_SHA=$commit_sha
+ENV LSSS_VERSION='lsss-3.1.0-alpha-20250430-1546-linux'
 LABEL COMMIT_SHA=$commit_sha
 LABEL VERSION_NUMBER=$version_number
-LABEL LSSS_VERSION='lsss-3.0.0-20250204-0841-linux'
+LABEL LSSS_VERSION='lsss-3.1.0-alpha-20250430-1546-linux'
 
 # Install Korona
-RUN wget https://marec.no/downloads/lsss-3.0.0-20250204-0841/lsss-3.0.0-20250204-0841-linux.zip
-RUN unzip lsss-3.0.0-20250204-0841-linux.zip
-RUN rm lsss-3.0.0-20250204-0841-linux.zip
-RUN unzip /lsss-3.0.0-20250204-0841/lsss-3.0.0-linux.zip -d /
-RUN rm /lsss-3.0.0-20250204-0841/lsss-3.0.0-linux.zip
-COPY KoronaCli.sh /lsss-3.0.0/korona/KoronaCli.sh
+RUN wget https://marec.no/tmp/lsss-3.1.0-alpha-20250430-1546-linux.zip
+RUN unzip lsss-3.1.0-alpha-20250430-1546-linux.zip
+RUN rm lsss-3.1.0-alpha-20250430-1546-linux.zip
+#RUN unzip /lsss-3.1.0-alpha-20250430/lsss-3.1.0-alpha-20250430-1546-linux.zip -d /
+#RUN rm /lsss-3.1.0-alpha-20250430-1546-linux.zip
+COPY KoronaCli.sh /lsss-3.1.0-alpha/korona/KoronaCli.sh
 
 # Copy korona files
 COPY compression.cds /app/
