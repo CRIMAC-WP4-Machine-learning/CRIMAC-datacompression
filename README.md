@@ -6,7 +6,7 @@ Data compression using Dockerized Korona
 
 Build the docker image: 
 
-`docker build --build-arg=commit_sha=$(git rev-parse HEAD) --build-arg=version_number=$(git describe --tags) --no-cache --tag crimac-compression .`
+`docker build --build-arg=commit_sha=$(git rev-parse HEAD) --build-arg=version_number=$(git describe --tags) --no-cache --tag crimac-datacompression .`
 
 ## Test container
 

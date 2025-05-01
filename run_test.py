@@ -12,7 +12,7 @@ test_data = [d for d in Path(crimac_scratch,'test_data').iterdir() if d.is_dir()
 
 testvalues = {}
 
-# docker run -it --rm -v /mnt/c/DATAscratch/crimac-scratch/test_data/S2025302001_PFRIDA_10319/ACOUSTIC/EK80/EK80_RAWDATA:/datain -v /mnt/c/DATAscratch/crimac-scratch/test_data_out/S2025302001_PFRIDA_10319/ACOUSTIC/EK80/EK80_DECIMATED_DATA:/dataout crimac-compression --filename 2025302005-D20250429-T142408.raw
+# docker run -it --rm -v /mnt/c/DATAscratch/crimac-scratch/test_data/S2025302001_PFRIDA_10319/ACOUSTIC/EK80/EK80_RAWDATA:/datain -v /mnt/c/DATAscratch/crimac-scratch/test_data_out/S2025302001_PFRIDA_10319/ACOUSTIC/EK80/EK80_DECIMATED_DATA:/dataout crimac-datacompression --filename 2025302005-D20250429-T142408.raw
 
 for _test_data in test_data:
     print(_test_data)
@@ -37,7 +37,6 @@ for _test_data in test_data:
             "docker", "run", "-it", "--rm",
             "-v", str(datain)+':/datain',
             "-v", str(dataout)+':/dataout',
-            "--security-opt", "label=disable",
             "crimac-datacompression", "--filename", _file.name]
 
         subprocess.run(command, check=True)
