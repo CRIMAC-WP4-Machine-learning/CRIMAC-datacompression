@@ -14,6 +14,13 @@
             <parameter name="Active">true</parameter>
          </parameters>
       </module>
+      <module name="DataQualityModule">
+         <parameters>
+            <parameter name="Active">true</parameter>
+            <parameter name="DirName">dataQuality</parameter>
+            <parameter name="MainFrequency">38</parameter>
+         </parameters>
+      </module>
       <module name="SmootherModule">
          <parameters>
             <parameter name="Active">true</parameter>
@@ -89,7 +96,6 @@
             <parameter name="UseFallbackNoiseQuantile">true</parameter>
             <parameter name="FallbackNoiseQuantile">5</parameter>
             <parameter name="FallbackNoiseChannels">f&lt;50</parameter>
-            <parameter name="WritePlotParameters">false</parameter>
          </parameters>
       </module>
       <module name="NoiseRemoverModule">
@@ -97,7 +103,6 @@
             <parameter name="Active">true</parameter>
             <parameter name="RemoveNoiseFromStart">true</parameter>
             <parameter name="MaxBufferSize">50</parameter>
-            <parameter name="SampleSizeCorrection"/>
          </parameters>
       </module>
       <module name="EchoLineCompressionModule">
