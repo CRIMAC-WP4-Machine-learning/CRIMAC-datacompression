@@ -16,6 +16,17 @@ def copy_file_if_exists(filename, source_dir='/datain', dest_dir='/scratch'):
     else:
         print(f'File "{filename}" does not exist in "{source_dir}".')
 
+def delete_target_file_if_exists(filename, dest_dir='/dataout'):
+    main_filename, extension = os.path.splitext(filename)
+    filename = main_filename+'-korona'+extension
+    target_file = Path(dest_dir) / filename
+    # Check if the target file exists
+    if target_file.exists():
+        # Copy the file if it exists
+        os.remove(target_file)
+        print(f'File "{target_file}" deleted successfully from "{dest_dir}"')
+    else:
+        print(f'File "{target_file}" does not exist in "{dest_dir}".')
 
 # Print environment variables
 print('CRIMAC-datacompression')
@@ -36,9 +47,16 @@ parser.add_argument('--filename', required=True, type=str, help='Name of the fil
 args = parser.parse_args()
 
 # Create a copy of the input file in the scratch directory
+print('Copying files for procesing inside the container:')
 copy_file_if_exists(args.filename)
 copy_file_if_exists(args.filename.split('.')[0]+'.idx')
 copy_file_if_exists(args.filename.split('.')[0]+'.bot')
+
+# Delete the output files if they already exists
+print('Delete output files if they already exist:')
+delete_target_file_if_exists(args.filename)
+delete_target_file_if_exists(args.filename.split('.')[0]+'.idx')
+delete_target_file_if_exists(args.filename.split('.')[0]+'.bot')
 
 # Run korona on the single file
 cmdstr = ['/lsss-3.1.0-alpha/korona/KoronaCli.sh',

@@ -5,7 +5,7 @@ import subprocess
 import json
 import numpy as np
 
-crimac_scratch = os.getenv('CRIMACSCRATCH')
+crimac_scratch = '/crimac-scratch' #'CRIMACSCRATCH')
 
 # List of test data
 test_data = [d for d in Path(crimac_scratch,'test_data').iterdir() if d.is_dir()]
