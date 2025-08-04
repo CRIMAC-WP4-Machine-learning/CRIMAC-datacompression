@@ -59,7 +59,7 @@ delete_target_file_if_exists(args.filename.split('.')[0]+'.idx')
 delete_target_file_if_exists(args.filename.split('.')[0]+'.bot')
 
 # Run korona on the single file
-cmdstr = ['/lsss-3.1.0-alpha/korona/KoronaCli.sh',
+cmdstr = ['/lsss-3.1.0-rc1/korona/KoronaCli.sh',
           'batch',
           '--cfs', '/app/compression.cfs',
           '--destination', '/dataout',
