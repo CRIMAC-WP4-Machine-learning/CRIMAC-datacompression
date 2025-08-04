@@ -15,8 +15,9 @@ LABEL LSSS_VERSION='lsss-3.1.0-rc1-20250721-1247-linux'
 #lsss-3.1.0-rc1-20250721-1247-linux.zip
 
 # Download Korona
-#RUN wget https://marec.no/tmp/lsss-3.1.0-rc1-20250721-1247-linux.zip
-COPY lsss-3.1.0-rc1-20250721-1247-linux.zip lsss-3.1.0-rc1-20250721-1247-linux.zip
+RUN wget --ftp-user=lsss --ftp-password=T3553ract \
+    ftp://ftp.imr.no/lsss-3.1.0-rc1-20250721-1247/lsss-3.1.0-rc1-20250721-1247-linux.zip \
+    -O /lsss-3.1.0-rc1-20250721-1247-linux.zip
 
 # Unpack Korona in two stages:
 RUN unzip lsss-3.1.0-rc1-20250721-1247-linux.zip
