@@ -6,36 +6,39 @@ RUN apt-get update && apt-get install -y wget unzip libnetcdf-dev
 # Set up versioning
 ARG version_number
 ARG commit_sha
+
+#ARG LSSS_VERSION=lsss-3.1.0-rc1-20250721-1247-linux
+
+ARG LSSS_VERSION_VER=lsss-3.1.0
+ARG LSSS_VERSION_REL=rc1
+ARG LSSS_VERSION_T=20250721-1247
+
+ARG LSSS_VERSION=${LSSS_VERSION_VER}-${LSSS_VERSION_REL}-${LSSS_VERSION_T}-linux
+#lsss-3.1.0-rc1-20250721-1247
+
 ENV VERSION_NUMBER=$version_number
 ENV COMMIT_SHA=$commit_sha
-ENV LSSS_VERSION='lsss-3.1.0-alpha-20250430-1546-linux'
+ENV LSSS_VERSION=$LSSS_VERSION
+
 LABEL COMMIT_SHA=$commit_sha
 LABEL VERSION_NUMBER=$version_number
-LABEL LSSS_VERSION='lsss-3.1.0-rc1-20250721-1247-linux'
-#lsss-3.1.0-rc1-20250721-1247-linux.zip
+LABEL LSSS_VERSION=$LSSS_VERSION
 
 # Download Korona
-RUN wget --ftp-user=lsss --ftp-password=T3553ract \
-    ftp://ftp.imr.no/lsss-3.1.0-rc1-20250721-1247/lsss-3.1.0-rc1-20250721-1247-linux.zip \
-    -O /lsss-3.1.0-rc1-20250721-1247-linux.zip
+RUN wget https://marec.no/tmp/${LSSS_VERSION}.zip
 
 # Unpack Korona in two stages:
-RUN unzip lsss-3.1.0-rc1-20250721-1247-linux.zip
-RUN rm lsss-3.1.0-rc1-20250721-1247-linux.zip
-RUN unzip /lsss-3.1.0-rc1-20250721-1247/lsss-3.1.0-rc1-linux.zip -d /
-RUN rm /lsss-3.1.0-rc1-20250721-1247/lsss-3.1.0-rc1-linux.zip
+RUN unzip /${LSSS_VERSION}.zip
+RUN rm /${LSSS_VERSION}.zip
+RUN unzip /${LSSS_VERSION_VER}-${LSSS_VERSION_REL}-${LSSS_VERSION_T}/${LSSS_VERSION_VER}-${LSSS_VERSION_REL}-linux.zip -d /
+RUN rm /${LSSS_VERSION_VER}-${LSSS_VERSION_REL}-${LSSS_VERSION_T}/${LSSS_VERSION_VER}-${LSSS_VERSION_REL}-linux.zip
 
-COPY KoronaCli.sh /lsss-3.1.0-rc1/korona/KoronaCli.sh
+COPY KoronaCli.sh /${LSSS_VERSION_VER}-${LSSS_VERSION_REL}/korona/KoronaCli.sh
 
 # Copy korona files
 COPY compression.cds /app/
 COPY compression.cfs /app/
 COPY TransducerRanges.xml /app/
-
-# Install python libraries & python code
-#COPY requirements.txt /requirements.txt
-#RUN pip install --no-cache-dir --upgrade pip && \
-#    pip install --no-cache-dir -r requirements.txt
 
 # Prepare for running
 COPY CRIMAC_compression.py /app/CRIMAC_compression.py 
