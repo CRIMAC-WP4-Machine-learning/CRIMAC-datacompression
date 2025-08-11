@@ -4,6 +4,12 @@ import os
 import subprocess
 import json
 import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+import pwd
+
+current_user = pwd.getpwuid(os.getuid()).pw_name
+print(f"Current user is: {current_user}")
 
 crimac_scratch = '/crimac-scratch' #'CRIMACSCRATCH')
 
@@ -32,9 +38,10 @@ for _test_data in test_data:
     files = [item for item in datain.rglob('*.raw') if item.is_file()]
 
     for _file in files:
-        
+
         command = [
-            "docker", "run", "-it", "--rm",
+            "docker", "run",
+            "-it", "--rm",
             "-v", str(datain)+':/datain',
             "-v", str(dataout)+':/dataout',
             "crimac-datacompression", "--filename", _file.name]
@@ -50,7 +57,18 @@ for _test_data in test_data:
         print(_testvalues)
         testvalues[survey] = {}
         testvalues[survey][_file.name] = _testvalues
+        
+        doq = dataout /"dataQuality"
+        ds = xr.open_mfdataset(str(doq / "*.nc"), combine="by_coords")
+        '''
+        fig, axes = plt.subplots(nrows=len(ds.data_vars), figsize=(6, 4 * len(ds.data_vars)))
+        for ax, var in zip(axes, ds.data_vars):
+            ds[var].plot(ax=ax)
+            ax.set_title(var)
 
+        plt.tight_layout()
+        plt.savefig(doq / "dataQulity.png", dpi=300, bbox_inches="tight")
+        '''
 with open('results.json', 'w') as json_file:
     json.dump(testvalues, json_file)
 
@@ -64,3 +82,4 @@ for key in loaded_data.keys():
 
 print(np.array(cr))
 print(np.array(cr).mean())
+
