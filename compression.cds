@@ -120,7 +120,7 @@
             <parameter name="TransducerRange">true</parameter>
             <parameter name="MaxRange"/>
             <parameter name="MaxDepth"/>
-            <parameter name="MaxBelowBottom">1</parameter>
+            <parameter name="MaxBelowBottom"></parameter>
          </parameters>
       </module>
    </modules>
